@@ -85,6 +85,14 @@ export default defineComponent({
       video.pause()
     },
 
+    handleSkipToStartClick() {
+      this.seekTo(0);
+    },
+
+    handleSkipToEndClick() {
+      this.seekTo(this.duration);
+    },
+
     handleInputCurrentTime() {
       const input = this.$refs.currentTime as HTMLInputElement
       this.seekTo(input.valueAsNumber, true)
@@ -232,6 +240,20 @@ export default defineComponent({
     </main>
     <footer>
       <section class="controls">
+        <button class="skip-button" aria-label="Skip to start" @click="handleSkipToStartClick" :disabled="!url">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-skip-start-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M4 4a.5.5 0 0 1 1 0v3.248l6.267-3.636c.54-.313 1.232.066 1.232.696v7.384c0 .63-.692 1.01-1.232.697L5 8.753V12a.5.5 0 0 1-1 0z"
+            />
+          </svg>
+        </button>
         <button v-if="paused" aria-label="Play" @click="handlePlayClick" :disabled="!url">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -257,6 +279,20 @@ export default defineComponent({
           >
             <path
               d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"
+            />
+          </svg>
+        </button>
+        <button class="skip-button" aria-label="Skip to end" @click="handleSkipToEndClick" :disabled="!url">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-skip-end-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M12.5 4a.5.5 0 0 0-1 0v3.248L5.233 3.612C4.693 3.3 4 3.678 4 4.308v7.384c0 .63.692 1.01 1.233.697L11.5 8.753V12a.5.5 0 0 0 1 0z"
             />
           </svg>
         </button>
@@ -333,12 +369,14 @@ main {
 
 footer {
   border-top: 0.5px solid black;
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 .controls {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 5px;
 }
 
 button {
@@ -349,8 +387,13 @@ button {
 }
 
 button svg {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
+}
+
+.skip-button svg {
+  width: 30px;
+  height: 30px;
 }
 
 .current-time {
