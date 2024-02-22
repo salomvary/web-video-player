@@ -87,8 +87,7 @@ export default defineComponent({
 
     handleChangeCurrentTime() {
       const input = this.$refs.currentTime as HTMLInputElement
-      const video = this.$refs.video as HTMLVideoElement
-      video.currentTime = input.valueAsNumber
+      this.seekTo(input.valueAsNumber)
     },
 
     seekTo(newTime: number) {
