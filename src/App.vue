@@ -333,12 +333,12 @@ main {
 
 footer {
   border-top: 0.5px solid black;
+  padding: .5rem;
 }
 
 .controls {
   display: flex;
   justify-content: center;
-  padding: 0.5rem;
 }
 
 button {
@@ -355,7 +355,6 @@ button svg {
 
 .current-time {
   display: flex;
-  padding: 0.5rem;
   gap: 0.5rem;
   align-items: center;
 }
