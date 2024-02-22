@@ -32,11 +32,11 @@ export default defineComponent({
   },
 
   mounted() {
-    document.addEventListener('keyup', this.handleKeyUp)
+    document.addEventListener('keydown', this.handleKeyDown)
   },
 
   beforeUnmount() {
-    document.removeEventListener('keyup', this.handleKeyUp)
+    document.removeEventListener('keydown', this.handleKeyDown)
   },
 
   methods: {
@@ -123,7 +123,7 @@ export default defineComponent({
       this.seekBy(timeDelta, true)
     },
 
-    handleKeyUp(event: KeyboardEvent) {
+    handleKeyDown(event: KeyboardEvent) {
       switch (event.code) {
         case 'Space':
           this.handleSpaceKey()
