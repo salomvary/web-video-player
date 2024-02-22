@@ -11,14 +11,14 @@
       <dt>Right arrow</dt>
       <dd>Forward by one frame</dd>
 
-      <dt>Alt + left/right arrow</dt>
-      <dd>Seek to start/end</dd>
+      <dt>Alt + left arrow</dt>
+      <dd>Seek to start</dd>
 
       <dt>Alt + right arrow</dt>
       <dd>Seek to end</dd>
 
       <dt>?</dt>
-      <dd>Togggle help</dd>
+      <dd>Toggle help</dd>
     </dl>
     <p>
       <small>Press Esc or ? to hide help.</small>
