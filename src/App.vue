@@ -4,12 +4,14 @@ import Help from '@/components/Help.vue'
 
 const framesPerSecond = 25
 
+const defaultMessage = 'Select a video file.\n\nPress ? for help.'
+
 export default defineComponent({
   components: { Help },
   data() {
     return {
       showHelp: false,
-      message: 'Select a video file.\n\nPress ? for help.',
+      message: defaultMessage,
       paused: true,
       currentTime: 0,
       duration: 0,
@@ -42,7 +44,17 @@ export default defineComponent({
       const files = (event.target as HTMLInputElement).files
       if (files) {
         this.url = URL.createObjectURL(files[0])
+        // Reset error message
+        this.message = defaultMessage
       }
+    },
+
+    handleVideoError() {
+      // TODO: show a message based on video.error.code:
+      // https://developer.mozilla.org/en-US/docs/Web/API/MediaError/code#media_error_code_constants
+      this.message = 'Can not play this file :('
+      // Hide video
+      this.url = undefined
     },
 
     handleLoadMetadata() {
@@ -180,6 +192,7 @@ export default defineComponent({
         ref="video"
         :src="url"
         @loadedmetadata="handleLoadMetadata"
+        @error="handleVideoError"
         @timeupdate="handleTimeUpdate"
         @play="handlePlay"
         @pause="handlePause"
