@@ -85,31 +85,42 @@ export default defineComponent({
       video.pause()
     },
 
+    handleInputCurrentTime() {
+      const input = this.$refs.currentTime as HTMLInputElement
+      this.seekTo(input.valueAsNumber, true)
+    },
+
     handleChangeCurrentTime() {
       const input = this.$refs.currentTime as HTMLInputElement
       this.seekTo(input.valueAsNumber)
     },
 
-    seekTo(newTime: number) {
+    seekTo(newTime: number, fast = false) {
       this.currentTime = newTime
 
       const video = this.$refs.video as HTMLVideoElement | undefined
       if (video) {
-        video.currentTime = newTime
+        if (fast && 'fastSeek' in video) {
+          // Fast seek with precision tradeoff, not supported by chrome
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/fastSeek
+          video.fastSeek(newTime)
+        } else {
+          video.currentTime = newTime
+        }
       }
     },
 
-    seekBy(timeDelta: number) {
+    seekBy(timeDelta: number, fast = false) {
       const newTime = Math.min(Math.max(0, this.currentTime + timeDelta), this.duration)
 
-      this.seekTo(newTime)
+      this.seekTo(newTime, fast)
     },
 
     handleWheel(event: WheelEvent) {
       // Prevent history navigation or scrolling
       event.preventDefault()
       const timeDelta = -event.deltaX * (1 / framesPerSecond) * (event.shiftKey ? 0.1 : 1)
-      this.seekBy(timeDelta)
+      this.seekBy(timeDelta, true)
     },
 
     handleKeyUp(event: KeyboardEvent) {
@@ -259,7 +270,8 @@ export default defineComponent({
           :max="duration"
           :step="1 / framesPerSecond"
           :value="currentTime"
-          @input="handleChangeCurrentTime"
+          @input="handleInputCurrentTime"
+          @change="handleChangeCurrentTime"
         />
         <time>{{ formattedCurrentTime }}</time>
       </section>
