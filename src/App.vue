@@ -1,11 +1,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import Help from '@/components/Help.vue'
 
 const framesPerSecond = 25
 
 export default defineComponent({
+  components: { Help },
   data() {
     return {
+      showHelp: false,
+      message: 'Select a video file.\n\nPress ? for help.',
       paused: true,
       currentTime: 0,
       duration: 0,
@@ -108,6 +112,15 @@ export default defineComponent({
         case 'ArrowRight':
           this.handleRightKey(event)
           break
+        case 'Escape':
+          this.handleEscapeKey()
+          break
+      }
+
+      switch (event.key) {
+        case '?':
+          this.handleQuestionmarkKey()
+          break
       }
     },
 
@@ -136,6 +149,14 @@ export default defineComponent({
       } else {
         this.seekBy(1 / framesPerSecond)
       }
+    },
+
+    handleQuestionmarkKey() {
+      this.showHelp = !this.showHelp
+    },
+
+    handleEscapeKey() {
+      this.showHelp = false
     }
   }
 })
@@ -149,7 +170,11 @@ export default defineComponent({
     @keyup.left="handleLeftKey"
     @keyup.right="handleRightKey"
   >
-    <main>
+    <main v-if="showHelp">
+      <Help class="help" />
+    </main>
+
+    <main v-if="!showHelp">
       <video
         v-if="url"
         ref="video"
@@ -176,6 +201,10 @@ export default defineComponent({
             />
           </svg>
         </label>
+
+        <p class="message" v-if="message">
+          {{ message }}
+        </p>
       </div>
     </main>
     <footer>
@@ -242,9 +271,15 @@ main {
   justify-content: center;
 }
 
+.help {
+  align-self: center;
+}
+
 .video-selector {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .video-selector-button {
@@ -265,6 +300,11 @@ main {
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+.message {
+  text-align: center;
+  white-space: pre;
 }
 
 footer {
