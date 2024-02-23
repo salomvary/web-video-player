@@ -221,6 +221,7 @@ export default defineComponent({
         @play="handlePlay"
         @pause="handlePause"
         playsinline
+        preload="auto"
       />
 
       <div v-if="!url" class="video-selector">
