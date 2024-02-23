@@ -312,6 +312,10 @@ footer {
 </style>
 
 <style>
+a:link, a:visited {
+  color: dodgerblue;
+}
+
 .icon-button {
   background: none;
   border: none;

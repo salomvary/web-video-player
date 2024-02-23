@@ -23,6 +23,9 @@
     <p>
       <small>Press Esc or ? to hide help.</small>
     </p>
+    <p>
+      <a href="https://github.com/salomvary/web-video-player/">Source code on GitHub.</a>
+    </p>
   </article>
 </template>
 
