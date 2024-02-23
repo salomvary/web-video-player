@@ -338,7 +338,10 @@ main {
   flex: 1 1 auto;
   background-color: #202020;
   display: flex;
+  flex-direction: column;
+  justify-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .help {
@@ -375,6 +378,14 @@ main {
 .message {
   text-align: center;
   white-space: pre;
+}
+
+video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 footer {
