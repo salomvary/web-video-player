@@ -324,6 +324,10 @@ a:visited {
   color: dodgerblue;
 }
 
+:focus {
+  outline: 2px solid dodgerblue;
+}
+
 .unstyled-button {
   padding: 0;
   border: 0;

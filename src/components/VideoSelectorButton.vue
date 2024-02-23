@@ -26,6 +26,10 @@
   display: flex;
 }
 
+.video-selector-button:focus-within {
+  outline: 2px solid dodgerblue;
+}
+
 .video-selector-button svg {
   width: 80px;
   height: 80px;
