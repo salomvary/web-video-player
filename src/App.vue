@@ -86,11 +86,11 @@ export default defineComponent({
     },
 
     handleSkipToStartClick() {
-      this.seekTo(0);
+      this.seekTo(0)
     },
 
     handleSkipToEndClick() {
-      this.seekTo(this.duration);
+      this.seekTo(this.duration)
     },
 
     handleInputCurrentTime() {
@@ -240,7 +240,12 @@ export default defineComponent({
     </main>
     <footer>
       <section class="controls">
-        <button class="skip-button" aria-label="Skip to start" @click="handleSkipToStartClick" :disabled="!url">
+        <button
+          class="skip-button"
+          aria-label="Skip to start"
+          @click="handleSkipToStartClick"
+          :disabled="!url"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -282,7 +287,12 @@ export default defineComponent({
             />
           </svg>
         </button>
-        <button class="skip-button" aria-label="Skip to end" @click="handleSkipToEndClick" :disabled="!url">
+        <button
+          class="skip-button"
+          aria-label="Skip to end"
+          @click="handleSkipToEndClick"
+          :disabled="!url"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
