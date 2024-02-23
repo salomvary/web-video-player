@@ -101,40 +101,29 @@ export default defineComponent({
 
     handleInputCurrentTime() {
       const input = this.$refs.currentTime as HTMLInputElement
-      this.seekTo(input.valueAsNumber, true)
-    },
-
-    handleChangeCurrentTime() {
-      const input = this.$refs.currentTime as HTMLInputElement
       this.seekTo(input.valueAsNumber)
     },
 
-    seekTo(newTime: number, fast = false) {
+    seekTo(newTime: number) {
       this.currentTime = newTime
 
       const video = this.$refs.video as HTMLVideoElement | undefined
       if (video) {
-        if (fast && 'fastSeek' in video) {
-          // Fast seek with precision tradeoff, not supported by chrome
-          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/fastSeek
-          video.fastSeek(newTime)
-        } else {
-          video.currentTime = newTime
-        }
+        video.currentTime = newTime
       }
     },
 
-    seekBy(timeDelta: number, fast = false) {
+    seekBy(timeDelta: number) {
       const newTime = Math.min(Math.max(0, this.currentTime + timeDelta), this.duration)
 
-      this.seekTo(newTime, fast)
+      this.seekTo(newTime)
     },
 
     handleWheel(event: WheelEvent) {
       // Prevent history navigation or scrolling
       event.preventDefault()
       const timeDelta = -event.deltaX * (1 / framesPerSecond) * (event.shiftKey ? 0.1 : 1)
-      this.seekBy(timeDelta, true)
+      this.seekBy(timeDelta)
     },
 
     handleKeyDown(event: KeyboardEvent) {
@@ -249,7 +238,6 @@ export default defineComponent({
           :step="1 / framesPerSecond"
           :value="currentTime"
           @input="handleInputCurrentTime"
-          @change="handleChangeCurrentTime"
         />
         <CurrentTimeDisplay :current-time="currentTime" />
       </section>
