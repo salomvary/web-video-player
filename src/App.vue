@@ -220,6 +220,7 @@ export default defineComponent({
         @timeupdate="handleTimeUpdate"
         @play="handlePlay"
         @pause="handlePause"
+        playsinline
       />
 
       <div v-if="!url" class="video-selector">
