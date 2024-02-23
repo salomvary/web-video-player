@@ -244,6 +244,7 @@ export default defineComponent({
           :max="duration"
           :step="1 / framesPerSecond"
           :value="currentTime"
+          :disabled="!url"
           @input="handleInputCurrentTime"
         />
         <CurrentTimeDisplay :current-time="currentTime" />
