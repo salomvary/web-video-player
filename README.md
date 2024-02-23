@@ -1,6 +1,8 @@
 # Web Video Player
 
-Simple web based video player.
+Simple video player for the web.
+
+<img src="screenhot.png" alt="screeenshot">
 
 # Development
 
