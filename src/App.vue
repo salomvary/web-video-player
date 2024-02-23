@@ -10,7 +10,7 @@ import VideoSelectorButton from '@/components/VideoSelectorButton.vue'
 
 const framesPerSecond = 25
 
-const defaultMessage = 'Select a video file.\n\nPress ? for help.'
+const defaultMessage = 'Select a video file.'
 
 export default defineComponent({
   components: {
@@ -34,7 +34,10 @@ export default defineComponent({
   },
 
   computed: {
-    framesPerSecond: () => framesPerSecond
+    framesPerSecond: () => framesPerSecond,
+    showHelpButton() {
+      return this.message == defaultMessage
+    }
   },
 
   mounted() {
@@ -196,7 +199,7 @@ export default defineComponent({
     @keyup.right="handleRightKey"
   >
     <main v-if="showHelp">
-      <Help class="help" />
+      <Help class="help" @hidehelpclick="showHelp = false" />
     </main>
 
     <main v-if="!showHelp">
@@ -218,6 +221,10 @@ export default defineComponent({
 
         <p class="message" v-if="message">
           {{ message }}
+          <template v-if="showHelpButton">
+            <br /><br />
+            <button class="unstyled-button" @click="showHelp = true">Press ? for help.</button>
+          </template>
         </p>
       </div>
     </main>
@@ -277,7 +284,6 @@ main {
 
 .message {
   text-align: center;
-  white-space: pre;
 }
 
 video {
@@ -312,8 +318,18 @@ footer {
 </style>
 
 <style>
-a:link, a:visited {
+a:link,
+a:visited {
   color: dodgerblue;
+}
+
+.unstyled-button {
+  padding: 0;
+  border: 0;
+  background: 0;
+  display: inline;
+  font: inherit;
+  color: inherit;
 }
 
 .icon-button {

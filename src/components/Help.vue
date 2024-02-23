@@ -21,10 +21,16 @@
       <dd>Toggle help</dd>
     </dl>
     <p>
-      <small>Press Esc or ? to hide help.</small>
+      <small>
+        <button class="unstyled-button" @click="$emit('hidehelpclick')">
+          Press Esc or ? to hide help.
+        </button>
+      </small>
     </p>
     <p>
-      <a href="https://github.com/salomvary/web-video-player/">Source code on GitHub.</a>
+      <small>
+        <a href="https://github.com/salomvary/web-video-player/">Source code on GitHub.</a>
+      </small>
     </p>
   </article>
 </template>
