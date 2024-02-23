@@ -1,13 +1,27 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Help from '@/components/Help.vue'
+import CurrentTimeDisplay from '@/components/CurrentTimeDisplay.vue'
+import SkipToStartButton from '@/components/SkipToStartButton.vue'
+import PlayButton from '@/components/PlayButton.vue'
+import PauseButton from '@/components/PauseButton.vue'
+import SkipToEndButton from '@/components/SkipToEndButton.vue'
+import VideoSelectorButton from '@/components/VideoSelectorButton.vue'
 
 const framesPerSecond = 25
 
 const defaultMessage = 'Select a video file.\n\nPress ? for help.'
 
 export default defineComponent({
-  components: { Help },
+  components: {
+    VideoSelectorButton,
+    SkipToEndButton,
+    PauseButton,
+    PlayButton,
+    SkipToStartButton,
+    CurrentTimeDisplay,
+    Help
+  },
   data() {
     return {
       showHelp: false,
@@ -20,15 +34,7 @@ export default defineComponent({
   },
 
   computed: {
-    framesPerSecond: () => framesPerSecond,
-
-    formattedCurrentTime() {
-      const seconds = Math.floor(this.currentTime)
-      const milliseconds = Math.round((this.currentTime % 1) * 1000)
-        .toString()
-        .padStart(3, '0')
-      return `${seconds}.${milliseconds}`
-    }
+    framesPerSecond: () => framesPerSecond
   },
 
   mounted() {
@@ -215,23 +221,9 @@ export default defineComponent({
         @play="handlePlay"
         @pause="handlePause"
       />
+
       <div v-if="!url" class="video-selector">
-        <label class="video-selector-button">
-          <input type="file" @change="handleFileChange" />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-arrow-down"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"
-            />
-          </svg>
-        </label>
+        <VideoSelectorButton @change="handleFileChange" />
 
         <p class="message" v-if="message">
           {{ message }}
@@ -240,72 +232,10 @@ export default defineComponent({
     </main>
     <footer>
       <section class="controls">
-        <button
-          class="skip-button"
-          aria-label="Skip to start"
-          @click="handleSkipToStartClick"
-          :disabled="!url"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-skip-start-fill"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M4 4a.5.5 0 0 1 1 0v3.248l6.267-3.636c.54-.313 1.232.066 1.232.696v7.384c0 .63-.692 1.01-1.232.697L5 8.753V12a.5.5 0 0 1-1 0z"
-            />
-          </svg>
-        </button>
-        <button v-if="paused" aria-label="Play" @click="handlePlayClick" :disabled="!url">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-play-fill"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"
-            />
-          </svg>
-        </button>
-        <button v-if="!paused" aria-label="Pause" @click="handlePauseClick" :disabled="!url">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-pause-fill"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"
-            />
-          </svg>
-        </button>
-        <button
-          class="skip-button"
-          aria-label="Skip to end"
-          @click="handleSkipToEndClick"
-          :disabled="!url"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-skip-end-fill"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M12.5 4a.5.5 0 0 0-1 0v3.248L5.233 3.612C4.693 3.3 4 3.678 4 4.308v7.384c0 .63.692 1.01 1.233.697L11.5 8.753V12a.5.5 0 0 0 1 0z"
-            />
-          </svg>
-        </button>
+        <SkipToStartButton @click="handleSkipToStartClick" :disabled="!url" />
+        <PlayButton v-if="paused" @click="handlePlayClick" :disabled="!url" />
+        <PauseButton v-if="!paused" @click="handlePauseClick" :disabled="!url" />
+        <SkipToEndButton @click="handleSkipToEndClick" :disabled="!url" />
       </section>
 
       <section class="current-time">
@@ -319,7 +249,7 @@ export default defineComponent({
           @input="handleInputCurrentTime"
           @change="handleChangeCurrentTime"
         />
-        <time>{{ formattedCurrentTime }}</time>
+        <CurrentTimeDisplay :current-time="currentTime" />
       </section>
     </footer>
   </div>
@@ -355,26 +285,6 @@ main {
   justify-content: center;
 }
 
-.video-selector-button {
-  padding: 20px;
-  border-radius: 10px;
-  position: relative;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex;
-}
-
-.video-selector-button svg {
-  width: 80px;
-  height: 80px;
-}
-
-.video-selector input {
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
 .message {
   text-align: center;
   white-space: pre;
@@ -400,23 +310,6 @@ footer {
   gap: 5px;
 }
 
-button {
-  background: none;
-  border: none;
-  color: inherit;
-  display: flex;
-}
-
-button svg {
-  width: 45px;
-  height: 45px;
-}
-
-.skip-button svg {
-  width: 30px;
-  height: 30px;
-}
-
 .current-time {
   display: flex;
   gap: 0.5rem;
@@ -425,5 +318,28 @@ button svg {
 
 .current-time input {
   flex: 1 1 auto;
+}
+</style>
+
+<style>
+.icon-button {
+  background: none;
+  border: none;
+  color: inherit;
+  display: flex;
+  box-sizing: border-box;
+  width: 45px;
+  height: 45px;
+  padding: 0;
+}
+
+.icon-button svg {
+  height: 100%;
+  flex: 1 1 auto;
+}
+
+.skip-button {
+  width: 30px;
+  height: 30px;
 }
 </style>
