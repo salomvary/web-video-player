@@ -10,6 +10,7 @@ import VideoSelectorButton from '@/components/VideoSelectorButton.vue'
 
 const framesPerSecond = 25
 
+const defaultTitle = 'Web Video Player'
 const defaultMessage = 'Select a video file.'
 
 export default defineComponent({
@@ -29,7 +30,8 @@ export default defineComponent({
       paused: true,
       currentTime: 0,
       duration: 0,
-      url: undefined as string | undefined
+      url: undefined as string | undefined,
+      fileName: ''
     }
   },
 
@@ -37,6 +39,12 @@ export default defineComponent({
     framesPerSecond: () => framesPerSecond,
     showHelpButton() {
       return this.message == defaultMessage
+    }
+  },
+
+  watch: {
+    fileName(fileName) {
+      document.title = fileName ? `${fileName} | ${defaultTitle}` : defaultTitle
     }
   },
 
@@ -53,6 +61,7 @@ export default defineComponent({
       const files = (event.target as HTMLInputElement).files
       if (files) {
         this.url = URL.createObjectURL(files[0])
+        this.fileName = files[0].name
         // Reset error message
         this.message = defaultMessage
       }
